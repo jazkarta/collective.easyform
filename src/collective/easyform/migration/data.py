@@ -38,7 +38,12 @@ def migrate_saved_data(ploneformgen, easyform):
                     field = schema.get(key)
                     value = value.decode("utf8")
                     if IFromUnicode.providedBy(field):
-                        value = field.fromUnicode(value)
+                        # value = field.fromUnicode(value)
+                        from zope.schema.interfaces import ConstraintNotSatisfied
+                        try:
+                            value = field.fromUnicode(value)
+                        except ConstraintNotSatisfied:
+                            import pdb;pdb.set_trace()
                     elif IDatetime.providedBy(field) and value:
                         value = DateTime(value).asdatetime()
                     elif IDate.providedBy(field) and value:
