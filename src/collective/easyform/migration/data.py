@@ -5,6 +5,7 @@ from collective.easyform.api import get_schema
 from collective.easyform.interfaces import ISaveData
 from DateTime import DateTime
 from plone.namedfile.interfaces import INamedBlobFileField
+from zope.schema.interfaces import ConstraintNotSatisfied
 from zope.schema.interfaces import IDate
 from zope.schema.interfaces import IDatetime
 from zope.schema.interfaces import IFromUnicode
@@ -34,16 +35,25 @@ def migrate_saved_data(ploneformgen, easyform):
                     )
                     continue
                 data = {}
+                valid_row = True
                 for key, value in zip(cols, row):
                     field = schema.get(key)
                     value = value.decode("utf8")
                     if IFromUnicode.providedBy(field):
-                        # value = field.fromUnicode(value)
-                        from zope.schema.interfaces import ConstraintNotSatisfied
                         try:
                             value = field.fromUnicode(value)
                         except ConstraintNotSatisfied:
-                            import pdb;pdb.set_trace()
+                            valid_row = False
+                            logger.warning(
+                                "Invalid value for field %s found in row %s of "
+                                "data adapter %s/%s:\n%s",
+                                key,
+                                idx,
+                                "/".join(easyform.getPhysicalPath()),
+                                data_adapter.getId(),
+                                value,
+                            )
+                            break
                     elif IDatetime.providedBy(field) and value:
                         value = DateTime(value).asdatetime()
                     elif IDate.providedBy(field) and value:
@@ -56,4 +66,5 @@ def migrate_saved_data(ploneformgen, easyform):
                     elif INamedBlobFileField.providedBy(field):
                         value = None
                     data[key] = value
-                action.addDataRow(data)
+                if valid_row:
+                    action.addDataRow(data)
