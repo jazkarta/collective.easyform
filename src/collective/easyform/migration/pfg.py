@@ -44,7 +44,6 @@ FIELD_MAPPING = {
     "checkAuthenticator": Field("CSRFProtection", migrate_simplefield),
 }
 
-STATE = {}
 
 class PloneFormGenMigrator(ATCTContentMigrator):
     """Migrator for PFG to easyform"""
@@ -63,32 +62,8 @@ class PloneFormGenMigrator(ATCTContentMigrator):
         migrate_saved_data(self.old, self.new)
 
     def migrate(self, unittest=0):
-        physical_path = "/".join(self.old.getPhysicalPath())
-        # Original function:
-        # super(PloneFormGenMigrator, self).migrate()
-        # logger.info("Migrated FormFolder %s", "/".join(self.new.getPhysicalPath()))
-
-        with open("/tmp/all_forms", "a") as fh:
-            fh.write(physical_path + "\n")
-
-        # Forgiving migration:
-        physical_path = "/".join(self.old.getPhysicalPath())
-        try:
-            if "pce-committees/alpine-ambassadors/alpine-ambassadors-documents/alpine-ambassadors-renewal" in physical_path:
-                logger.info("Migrating (for real) FormFolder %s", physical_path)
-                super(PloneFormGenMigrator, self).migrate()
-                logger.info("Migrated FormFolder %s", "/".join(self.new.getPhysicalPath()))
-            with open("/tmp/good_forms", "a") as fh:
-                fh.write(physical_path + "\n")
-            # import transaction
-            # transaction.commit()
-        except KeyboardInterrupt:
-            raise
-        except:
-            logger.exception("Could not Migrate FormFolder %s", "/".join(self.new.getPhysicalPath()))
-            with open("/tmp/bad_forms", "a") as fh:
-                fh.write(physical_path + "\n")
-            import pdb; pdb.post_mortem()
+        super(PloneFormGenMigrator, self).migrate()
+        logger.info("Migrated FormFolder %s", "/".join(self.new.getPhysicalPath()))
 
 
 class IMigratePloneFormGenFormSchema(model.Schema):
