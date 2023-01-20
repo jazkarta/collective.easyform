@@ -407,7 +407,6 @@ class EasyFormForm(AutoExtensibleForm, form.Form):
 
     def render(self):
         self.getOnDisplayOverride()
-        self.updateWidgets()
         return super(EasyFormForm, self).render()
 
 
