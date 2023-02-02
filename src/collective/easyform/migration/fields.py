@@ -191,6 +191,7 @@ PROPERTIES_MAPPING = {
     "fgTDefault": Property("easyform:TDefault", set_attribute),
     "fgTEnabled": Property("easyform:TEnabled", set_attribute),
     "fgTValidator": Property("easyform:TValidator", set_attribute),
+    "fgBooleanValidator": Property("easyform:validators", set_attribute),
     "fgTVocabulary": None,  # Not available in collective.easyform
     "fgVocabulary": Property("values", append_vocab_node),
     "hidden": Property("easyform:THidden", set_attribute),
