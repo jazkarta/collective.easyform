@@ -26,6 +26,13 @@ def append_field(schema, type_, name, properties):
     return field
 
 
+def append_field_required_false(schema, type_, name, properties):
+    field = append_field(schema, type_, name, properties)
+    required = etree.SubElement(field, u"required")
+    required.text = u"False"
+    return field
+
+
 def append_label_field(schema, type_, name, properties):
     field = append_field(schema, type_, name, properties)
     append_node(field, u"required", u"False")
@@ -167,7 +174,7 @@ TYPES_MAPPING = {
         "collective.easyform.fields.RichLabel", append_label_field
     ),
     "FormFileField": Type("plone.namedfile.field.NamedBlobFile", append_field),
-    "FormCaptchaField": Type("collective.easyform.fields.ReCaptcha", append_field),
+    "FormCaptchaField": Type("collective.easyform.fields.ReCaptcha", append_field_required_false),
     "FormLikertField": Type("collective.easyform.fields.Likert", append_field),
     "FieldsetStart": Type("", append_fieldset),
     "FieldsetEnd": Type("", None),
@@ -184,6 +191,7 @@ PROPERTIES_MAPPING = {
     "fgTDefault": Property("easyform:TDefault", set_attribute),
     "fgTEnabled": Property("easyform:TEnabled", set_attribute),
     "fgTValidator": Property("easyform:TValidator", set_attribute),
+    "fgBooleanValidator": Property("easyform:validators", set_attribute),
     "fgTVocabulary": None,  # Not available in collective.easyform
     "fgVocabulary": Property("values", append_vocab_node),
     "hidden": Property("easyform:THidden", set_attribute),
