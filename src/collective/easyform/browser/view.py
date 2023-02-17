@@ -328,6 +328,7 @@ class EasyFormForm(AutoExtensibleForm, form.Form):
     def update(self):
         """Update form - see interfaces.IForm"""
         self.formMaybeForceSSL()
+        self.getOnDisplayOverride()
         super(EasyFormForm, self).update()
         self.template = self.form_template
         if self.request.method != "POST" or self.context.thanksPageOverride:
@@ -404,11 +405,6 @@ class EasyFormForm(AutoExtensibleForm, form.Form):
         """
         if self.context.onDisplayOverride:
             get_expression(self.context, self.context.onDisplayOverride)
-
-    def render(self):
-        self.getOnDisplayOverride()
-        self.updateWidgets()
-        return super(EasyFormForm, self).render()
 
 
 class EasyFormFormWrapper(FormWrapper):
