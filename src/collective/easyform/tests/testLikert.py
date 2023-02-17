@@ -116,7 +116,7 @@ class LikerWidgetTests(EasyFormFunctionalTestCase):
         view.request.method = 'POST'
         rendered = view()
         self.assertTrue(u"Thank You" in rendered)
-        self.assertTrue(u"1: Agree, 2: Disagree" in rendered)
+        self.assertTrue(u"1: Agree, 2: Disagree" in rendered, rendered)
         transaction.commit()
         actions_view = ff1.restrictedTraverse('actions')
         saver_view = actions_view.publishTraverse(actions_view.request, 'saver')
