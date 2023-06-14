@@ -62,6 +62,8 @@ class PloneFormGenMigrator(ATCTContentMigrator):
         migrate_saved_data(self.old, self.new)
 
     def migrate(self, unittest=0):
+        if self.old.portal_type != 'FormFolder':
+            return
         super(PloneFormGenMigrator, self).migrate()
         logger.info("Migrated FormFolder %s", "/".join(self.new.getPhysicalPath()))
 
