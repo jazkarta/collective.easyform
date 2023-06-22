@@ -398,6 +398,11 @@ class EasyFormForm(AutoExtensibleForm, form.Form):
 
         return header_to_inject
 
+    def form_name(self):
+        if self.context.nameAttribute:
+            return self.context.nameAttribute
+        return None
+    
 
     def getOnDisplayOverride(self):
         """Evaluate form setup script TALES expression stored in the
