@@ -99,7 +99,6 @@ class FileSizeValidator(validator.SimpleFieldValidator):
         super(FileSizeValidator, self).validate(value)
         view = ValidateFile(self.context, self.request)
         max_size = api.portal.get_registry_record("easyform.max_filesize")
-        import pdb; pdb.set_trace()
         if max_size:
             result = view(value, size=max_size)
             if result:
