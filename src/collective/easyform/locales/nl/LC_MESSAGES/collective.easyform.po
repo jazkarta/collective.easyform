@@ -889,7 +889,7 @@ msgstr "Het bestandstype ${ftype} is niet toegestaan ​​als upload"
 
 #: collective/easyform/browser/view.py:399
 msgid "msg_file_too_big"
-msgstr "Het geüploade bestand is groter dan $ {size} bytes."
+msgstr "Het geüploade bestand is groter dan ${size} bytes."
 
 #. Default: "Comma-Separated Values"
 #: collective/easyform/vocabularies.py:80
