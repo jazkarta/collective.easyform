@@ -39,7 +39,7 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: collective/easyform/browser/controlpanel.py:28
+#: collective/easyform/browser/controlpanel.py:20
 #: collective/easyform/profiles/default/registry.xml
 msgid "Allowed Fields"
 msgstr ""
@@ -87,6 +87,10 @@ msgstr ""
 
 #: collective/easyform/profiles/default/actions.xml
 msgid "Export"
+msgstr ""
+
+#: collective/easyform/interfaces/fields.py:94
+msgid "Field depends on"
 msgstr ""
 
 #: collective/easyform/interfaces/easyform.py:90
@@ -163,7 +167,7 @@ msgstr ""
 msgid "Thanks Page"
 msgstr ""
 
-#: collective/easyform/browser/controlpanel.py:29
+#: collective/easyform/browser/controlpanel.py:21
 #: collective/easyform/profiles/default/registry.xml
 msgid "This Fields are available for your forms."
 msgstr ""
