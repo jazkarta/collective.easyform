@@ -9,6 +9,7 @@ from zope.schema.interfaces import IDate
 from zope.schema.interfaces import IDatetime
 from zope.schema.interfaces import IFromUnicode
 from zope.schema.interfaces import ISet
+from zope.schema.interfaces import ITextLine
 
 import logging
 
@@ -37,7 +38,9 @@ def migrate_saved_data(ploneformgen, easyform):
                 for key, value in zip(cols, row):
                     field = schema.get(key)
                     value = value.decode("utf8")
-                    if IFromUnicode.providedBy(field):
+                    if ITextLine.providedBy(field):
+                        value = field.fromUnicode(value.strip())
+                    elif IFromUnicode.providedBy(field):
                         value = field.fromUnicode(value)
                     elif IDatetime.providedBy(field) and value:
                         value = DateTime(value).asdatetime()
