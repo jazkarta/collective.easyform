@@ -53,7 +53,11 @@ class PloneFormGenMigrator(ATCTContentMigrator):
     dst_portal_type = "EasyForm"
     dst_meta_type = None  # not used
 
+    def beforeChange_ploneformgen(self):
+        self.old.old_actionAdapter = self.old.actionAdapter
+
     def migrate_ploneformgen(self):
+        self.old.actionAdapter = self.old.old_actionAdapter
         for pfg_field, ef_field in FIELD_MAPPING.items():
             ef_field.handler(self.old, self.new, pfg_field, ef_field.name)
         self.new.fields_model = fields_model(self.old)

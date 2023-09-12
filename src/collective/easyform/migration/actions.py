@@ -59,6 +59,7 @@ PROPERTIES_MAPPING = {
     "recipient_name": Property("recipient_name", append_node),
     "recipientOverride": Property("recipientOverride", append_node),
     "replyto_field": Property("replyto_field", append_node),
+    "required": Property("required", append_node),
     "senderOverride": Property("senderOverride", append_node),
     "showAll": Property("showAll", append_node),
     "showFields": Property("showFields", append_list_node),
@@ -77,12 +78,14 @@ PROPERTIES_MAPPING = {
 
 def pfg_actions(context):
     actions = []
+    enabled_adapters = context.getRawActionAdapter()
     for obj in context.objectValues():
         if not isinstance(obj, FormActionAdapter):
             continue
         id_ = obj.getId()
         props = {}
         props["_portal_type"] = obj.portal_type
+        props["required"] = id_ in enabled_adapters
         for field in obj.Schema().fields():
             name = field.getName()
             accessor = field.getEditAccessor(obj)
