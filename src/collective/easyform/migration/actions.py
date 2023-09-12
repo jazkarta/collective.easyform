@@ -53,6 +53,7 @@ PROPERTIES_MAPPING = {
     "ccOverride": Property("ccOverride", append_node),
     "description": Property("description", append_node),
     "execCondition": Property("easyform:execCondition", set_attribute),
+    "includeEmpties": Property("includeEmpties", append_node),
     "msg_subject": Property("msg_subject", append_node),
     "recipient_email": Property("recipient_email", append_node),
     "recipient_name": Property("recipient_name", append_node),
@@ -69,7 +70,6 @@ PROPERTIES_MAPPING = {
     "ExtraData": Property("ExtraData", append_list_node),
     "DownloadFormat": Property("DownloadFormat", append_node),
     "UseColumnNames": Property("UseColumnNames", append_node),
-    "SavedFormInput": Property("SavedFormInput", append_node),
     "ProxyRole": Property("ProxyRole", append_node),
     "ScriptBody": Property("ScriptBody", append_node),
 }
