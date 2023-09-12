@@ -98,8 +98,8 @@ def append_vocab_node(field, name, value):
 
 def append_default_node(field, name, value):
     if isinstance(value, list):
-        return
-    if field.get("type") == "collective.easyform.fields.RichLabel":
+        append_list_node(field, name, value)
+    elif field.get("type") == "collective.easyform.fields.RichLabel":
         append_node(field, "rich_label", value)
     else:
         append_node(field, name, value)
