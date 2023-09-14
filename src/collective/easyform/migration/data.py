@@ -27,17 +27,24 @@ def migrate_saved_data(ploneformgen, easyform):
             for idx, row in enumerate(data_adapter.getSavedFormInput()):
                 if len(row) != len(cols):
                     logger.warning(
-                        "Number of columns does not match. Skipping row %s in "
+                        "Number of columns does not match in row %s in "
                         "data adapter %s/%s",
                         idx,
                         "/".join(easyform.getPhysicalPath()),
                         data_adapter.getId(),
                     )
-                    continue
                 data = {}
-                for key, value in zip(cols, row):
+                for i in range(max(len(cols), len(row))):
+                    try:
+                        key = cols[i]
+                    except IndexError:
+                        key = "col-{}".format(i)
+                    try:
+                        value = row[i]
+                    except IndexError:
+                        value = b""
                     field = schema.get(key)
-                    value = value.decode("utf8")
+                    value = value.decode("utf8", errors="replace")
                     if ITextLine.providedBy(field):
                         value = field.fromUnicode(value.strip())
                     elif IFromUnicode.providedBy(field):
