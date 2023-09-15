@@ -100,6 +100,7 @@ class DataWrapper(dict):
 class SavedDataForm(crud.CrudForm):
     template = ViewPageTemplateFile("saveddata_form.pt")
     addform_factory = crud.NullForm
+    batch_size = 20
 
     @property
     def delimiter_missing(self):
