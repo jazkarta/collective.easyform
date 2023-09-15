@@ -239,11 +239,20 @@ def fields_model(ploneformgen):
     parser = etree.XMLParser(remove_blank_text=True)
     model = etree.fromstring(FIELDS_MODEL, parser)
     schema = model.find("{http://namespaces.plone.org/supermodel/schema}schema")
+    needs_fieldset = False
     for fieldname, properties in pfg_fields(ploneformgen):
         portal_type = properties["_portal_type"]
         if portal_type == "FieldsetEnd":
             schema = schema.getparent()
+            needs_fieldset = True
             continue
+
+        if portal_type == "FieldsetStart":
+            needs_fieldset = False
+        elif needs_fieldset:
+            needs_fieldset = False
+            schema = etree.SubElement(schema, u"fieldset")
+            schema.set(u"name", "")
 
         type_ = TYPES_MAPPING.get(portal_type)
         if type_ is None:

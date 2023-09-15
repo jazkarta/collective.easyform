@@ -93,6 +93,7 @@ class PloneFormGenMigrator(ATCTContentMigrator):
             ef_field.handler(self.old, self.new, pfg_field, ef_field.name)
         self.new.fields_model = fields_model(self.old)
         self.new.actions_model = actions_model(self.old)
+        self.new.form_tabbing = False
 
         pfg_thankspage = self.old.get(self.old.getThanksPage(), None)
         if pfg_thankspage:
