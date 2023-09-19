@@ -54,6 +54,11 @@ def set_attribute(field, name, value):
         field.set(name, value)
 
 
+def set_linkspam_validator(field, name, value):
+    if value:
+        set_attribute(field, name, "isNotLinkSpam")
+
+
 def append_node(field, name, value):
     if ":" in name:
         ns, name = name.split(":")
@@ -196,6 +201,7 @@ PROPERTIES_MAPPING = {
     "serverSide": Property("easyform:serverSide", set_attribute),
     "title": Property("title", append_or_set_title),
     "fgFormat": Property("form:widget", append_widget_node),
+    "validateNoLinkSpam": Property("easyform:validators", set_linkspam_validator),
 }
 
 
