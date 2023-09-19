@@ -84,6 +84,13 @@ class PloneFormGenMigrator(ATCTContentMigrator):
     dst_portal_type = "EasyForm"
     dst_meta_type = None  # not used
 
+    def migrate_owner(self):
+        # ignore case where owner no longer exists
+        try:
+            super(PloneFormGenMigrator, self).migrate_owner()
+        except AttributeError:
+            pass
+
     def beforeChange_ploneformgen(self):
         self.old.old_actionAdapter = self.old.actionAdapter
 
