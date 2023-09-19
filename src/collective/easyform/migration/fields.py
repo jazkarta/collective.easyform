@@ -126,6 +126,13 @@ def append_widget_node(field, name, value):
     set_attribute(node, "type", widget)
 
 
+def append_widget_param(field, name, value):
+    node = field.find("{{{}}}widget".format(NAMESPACES["form"]))
+    if node is None:
+        node = append_node(field, "form:widget", None)
+    append_node(node, name, value)
+
+
 def append_or_set_title(field, name, value):
     if field.tag == "fieldset":
         set_attribute(field, "label", value)
@@ -201,6 +208,7 @@ PROPERTIES_MAPPING = {
     "serverSide": Property("easyform:serverSide", set_attribute),
     "title": Property("title", append_or_set_title),
     "fgFormat": Property("form:widget", append_widget_node),
+    "fgRows": Property("rows", append_widget_param),
     "validateNoLinkSpam": Property("easyform:validators", set_linkspam_validator),
 }
 
