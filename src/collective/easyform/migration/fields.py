@@ -58,7 +58,7 @@ def set_attribute(field, name, value):
 
 
 def set_linkspam_validator(field, name, value):
-    if value:
+    if value and value != "False":
         set_attribute(field, name, "isNotLinkSpam")
 
 
@@ -194,7 +194,7 @@ PROPERTIES_MAPPING = {
     "likertAnswers": Property("answers", append_list_node),
     "fgDefault": Property("default", append_default_node),
     "fgmaxlength": Property("max_length", append_maxlength_node),
-    "fgsize": None,  # Not available in collective.easyform
+    "fgsize": Property("size", append_widget_param),
     "fgStringValidator": Property("easyform:validators", set_attribute),
     "fgTDefault": Property("easyform:TDefault", set_attribute),
     "fgTEnabled": Property("easyform:TEnabled", set_attribute),
