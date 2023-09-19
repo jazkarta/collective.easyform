@@ -46,6 +46,9 @@ def append_fieldset(schema, type_, name, properties):
 
 
 def set_attribute(field, name, value):
+    if name == "easyform:TDefault" and value == "object/@@sf_value":
+        # default from SalesforcePFGAdapter that is no longer used
+        return
     if u":" in name:
         ns, attr = name.split(":")
         ns = NAMESPACES.get(ns, ns)
