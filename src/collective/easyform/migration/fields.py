@@ -254,6 +254,8 @@ def fields_model(ploneformgen):
             continue
 
         if portal_type == "FieldsetStart":
+            if schema.tag == "fieldset":
+                schema = schema.getparent()
             needs_fieldset = False
         elif needs_fieldset:
             needs_fieldset = False
