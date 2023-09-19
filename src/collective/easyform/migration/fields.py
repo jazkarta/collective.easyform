@@ -260,7 +260,8 @@ def fields_model(ploneformgen):
     for fieldname, properties in pfg_fields(ploneformgen):
         portal_type = properties["_portal_type"]
         if portal_type == "FieldsetEnd":
-            schema = schema.getparent()
+            if schema.tag == "fieldset":
+                schema = schema.getparent()
             needs_fieldset = True
             continue
 
