@@ -21,13 +21,6 @@ NAMESPACES = {
 }
 
 
-def append_body_pt(field, name, value):
-    node = append_node(field, name, value)
-    # Replace mailer page template with the default one from easyform as it's
-    # unlikely that the PFG template would work.
-    node.text = default_mail_body()
-
-
 Type = namedtuple("Type", ["name", "handler"])
 Property = namedtuple("Property", ["name", "handler"])
 
@@ -47,7 +40,7 @@ PROPERTIES_MAPPING = {
     "body_footer": Property("body_footer", append_node),
     "body_post": Property("body_post", append_node),
     "body_pre": Property("body_pre", append_node),
-    "body_pt": Property("body_pt", append_body_pt),
+    "body_pt": Property("body_pt", append_node),
     "body_type": Property("body_type", append_node),
     "cc_recipients": Property("cc_recipients", append_node),
     "ccOverride": Property("ccOverride", append_node),
