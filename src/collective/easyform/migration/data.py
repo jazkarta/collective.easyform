@@ -18,6 +18,8 @@ logger = logging.getLogger("collective.easyform.migration")
 
 
 def migrate_saved_data(ploneformgen, easyform):
+    def noop(value):
+        pass
     for data_adapter in ploneformgen.objectValues("FormSaveDataAdapter"):
         actions = get_actions(easyform)
         action = actions.get(data_adapter.getId())
@@ -45,6 +47,8 @@ def migrate_saved_data(ploneformgen, easyform):
                         value = b""
                     field = schema.get(key)
                     value = value.decode("utf8", errors="replace")
+                    if field is not None:
+                        field.validate = noop  # disable validation
                     if ITextLine.providedBy(field):
                         value = field.fromUnicode(value.strip())
                     elif IFromUnicode.providedBy(field):
