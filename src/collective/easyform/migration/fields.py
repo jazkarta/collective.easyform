@@ -196,6 +196,7 @@ PROPERTIES_MAPPING = {
     "fgmaxlength": Property("max_length", append_maxlength_node),
     "fgsize": Property("size", append_widget_param),
     "fgStringValidator": Property("easyform:validators", set_attribute),
+    "fgBooleanValidator": Property("easyform:validators", set_attribute),
     "fgTDefault": Property("easyform:TDefault", set_attribute),
     "fgTEnabled": Property("easyform:TEnabled", set_attribute),
     "fgTValidator": Property("easyform:TValidator", set_attribute),
