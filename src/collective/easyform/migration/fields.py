@@ -130,6 +130,8 @@ def append_widget_node(field, name, value):
 
 
 def append_widget_param(field, name, value):
+    if not value or value == "None":
+        return
     node = field.find("{{{}}}widget".format(NAMESPACES["form"]))
     if node is None:
         node = append_node(field, "form:widget", None)
@@ -207,7 +209,7 @@ PROPERTIES_MAPPING = {
     "css_class": Property("easyform:css_class", set_attribute),
     "maxval": Property("max", append_node),
     "minval": Property("min", append_node),
-    "placeholder": None,  # Not available in collective.easyform
+    "placeholder": Property("placeholder", append_widget_param),
     "required": Property("required", append_required_node),
     "serverSide": Property("easyform:serverSide", set_attribute),
     "title": Property("title", append_or_set_title),
