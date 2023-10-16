@@ -48,6 +48,13 @@ def migrate_simplefield(src_obj, dst_obj, src_fieldname, dst_fieldname):
         setattr(dst_obj, dst_fieldname, safe_unicode(at_value))
 
 
+def migrate_rawfield(src_obj, dst_obj, src_fieldname, dst_fieldname):
+    field = src_obj.getField(src_fieldname)
+    at_value = field.getRaw(src_obj)
+    if at_value is not None:
+        setattr(dst_obj, dst_fieldname, safe_unicode(at_value))
+
+
 FIELD_MAPPING = {
     "submitLabel": Field("submitLabel", migrate_simplefield),
     "resetLabel": Field("resetLabel", migrate_simplefield),
@@ -58,9 +65,7 @@ FIELD_MAPPING = {
     "thanksPageOverride": Field("thanksPageOverride", migrate_simplefield),
     "formActionOverride": Field("formActionOverride", migrate_simplefield),
     "onDisplayOverride": Field("onDisplayOverride", migrate_simplefield),
-    "afterValidationOverride": Field(
-        "afterValidationOverride", migrate_simplefield
-    ),  # noqa
+    "afterValidationOverride": Field("afterValidationOverride", migrate_rawfield),
     "headerInjection": Field("headerInjection", migrate_simplefield),
     "checkAuthenticator": Field("CSRFProtection", migrate_simplefield),
 }
