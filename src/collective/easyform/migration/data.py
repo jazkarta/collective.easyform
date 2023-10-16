@@ -4,6 +4,7 @@ from collective.easyform.api import get_actions
 from collective.easyform.api import get_schema
 from collective.easyform.interfaces import ISaveData
 from DateTime import DateTime
+from DateTime.interfaces import DateTimeError
 from plone.namedfile.interfaces import INamedBlobFileField
 from zope.schema.interfaces import IDate
 from zope.schema.interfaces import IDatetime
@@ -46,23 +47,27 @@ def migrate_saved_data(ploneformgen, easyform):
                     except IndexError:
                         value = b""
                     field = schema.get(key)
-                    value = value.decode("utf8", errors="replace")
-                    if field is not None:
-                        field.validate = noop  # disable validation
-                    if ITextLine.providedBy(field):
-                        value = field.fromUnicode(value.strip())
-                    elif IFromUnicode.providedBy(field):
-                        value = field.fromUnicode(value)
-                    elif IDatetime.providedBy(field) and value:
-                        value = DateTime(value).asdatetime()
-                    elif IDate.providedBy(field) and value:
-                        value = DateTime(value).asdatetime().date()
-                    elif ISet.providedBy(field):
+                    if isinstance(value, bytes):
+                        value = value.decode("utf8", errors="replace")
+                        if field is not None:
+                            field.validate = noop  # disable validation
                         try:
-                            value = set(literal_eval(value))
-                        except ValueError:
+                            if ITextLine.providedBy(field):
+                                value = field.fromUnicode(value.strip())
+                            elif IFromUnicode.providedBy(field):
+                                value = field.fromUnicode(value)
+                            elif IDatetime.providedBy(field) and value:
+                                value = DateTime(value).asdatetime()
+                            elif IDate.providedBy(field) and value:
+                                value = DateTime(value).asdatetime().date()
+                            elif ISet.providedBy(field):
+                                try:
+                                    value = set(literal_eval(value))
+                                except (SyntaxError, ValueError):
+                                    pass
+                            elif INamedBlobFileField.providedBy(field):
+                                value = None
+                        except (TypeError, ValueError, SyntaxError, DateTimeError):
                             pass
-                    elif INamedBlobFileField.providedBy(field):
-                        value = None
                     data[key] = value
                 action.addDataRow(data)
