@@ -14,14 +14,14 @@
       <div id="formPrologue"
            tal:define="prologue context/formPrologue|nothing;"
            tal:condition="prologue|nothing"
-           tal:content="structure prologue/output"
+           tal:content="structure python:prologue.output_relative_to(context)"
       ></div>
     </metal:top-slot>
     <metal:top-slot fill-slot="formbottom">
       <div id="formEpilogue"
            tal:define="epilogue context/formEpilogue|nothing;"
            tal:condition="epilogue|nothing"
-           tal:content="structure epilogue/output"
+           tal:content="structure python:epilogue.output_relative_to(context)"
       ></div>
     </metal:top-slot>
   </metal:form>

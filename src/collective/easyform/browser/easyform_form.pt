@@ -11,7 +11,7 @@
              prologue context/formPrologue|nothing;
            "
            tal:condition="prologue"
-           tal:content="structure prologue/output"
+           tal:content="structure python:prologue.output_relative_to(context)"
       ></div>
     </metal:top-slot>
     <metal:top-slot fill-slot="formbottom">
@@ -20,7 +20,7 @@
              epilogue context/formEpilogue;
            "
            tal:condition="epilogue"
-           tal:content="structure epilogue/output"
+           tal:content="structure python:epilogue.output_relativ_to(context)"
       ></div>
     </metal:top-slot>
   </metal:form>
