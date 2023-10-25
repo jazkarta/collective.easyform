@@ -4,22 +4,22 @@
     >
 
   <gs:registerProfile
-      directory="profiles/1017"
+      directory="profiles/1012"
       for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
-      name="1017"
+      name="1012"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       title="EasyForm upgrade"
       />
 
   <gs:upgradeSteps
-      destination="1017"
+      destination="1012"
       profile="collective.easyform:default"
-      source="1016"
+      source="1011"
       >
 
     <gs:upgradeDepends
         title="Add max filesize in registry"
-        import_profile="collective.easyform.upgrades:1017"
+        import_profile="collective.easyform.upgrades:1012"
         />
 
   </gs:upgradeSteps>
