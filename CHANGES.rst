@@ -4,7 +4,9 @@ Changelog
 3.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add filesize upload limit. [ThibautBorn]
+
+- update Dutch translations [ThibautBorn]
 
 
 3.2.1 (2022-12-01)
