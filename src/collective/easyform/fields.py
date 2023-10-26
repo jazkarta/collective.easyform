@@ -52,7 +52,7 @@ def superAdapter(specific_interface, adapter, objects, name=u""):
     new_obj = []
     found = False
     for obj in objects:
-        interfaces = list(providedBy(obj).interfaces())
+        interfaces = list(providedBy(obj).__iro__)
         try:
             index = interfaces.index(specific_interface)
             found = True
@@ -81,7 +81,7 @@ def superAdapter(specific_interface, adapter, objects, name=u""):
     # But it looks like interfaces() works always.
     # adapter_interfaces = provided_by.declared
     # if not adapter_interfaces:
-    adapter_interfaces = list(provided_by.interfaces())
+    adapter_interfaces = list(provided_by.__iro__)
     if not adapter_interfaces:
         return
 
