@@ -30,6 +30,8 @@ class WidgetVocabulary(SimpleVocabulary):
     def getTerm(self, value):
         """See zope.schema.interfaces.IBaseVocabulary"""
         if not isinstance(value, six.string_types):
+            if not value.widget_factory:
+                raise LookupError
             value = "{0}.{1}".format(
                 value.widget_factory.__module__, value.widget_factory.__name__
             )
