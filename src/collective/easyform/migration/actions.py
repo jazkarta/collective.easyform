@@ -7,6 +7,7 @@ from collective.easyform.migration.fields import append_node
 from collective.easyform.migration.fields import set_attribute
 from collective.easyform.migration.fields import to_text
 from lxml import etree
+from plone import api
 from Products.PloneFormGen.content.actionAdapter import FormActionAdapter
 
 import logging
@@ -92,6 +93,7 @@ def actions_model(ploneformgen):
     parser = etree.XMLParser(remove_blank_text=True)
     model = etree.fromstring(ACTIONS_MODEL, parser)
     schema = model.find("{http://namespaces.plone.org/supermodel/schema}schema")
+    portal_workflow = api.portal.get_tool("portal_workflow")
 
     for actionname, properties in pfg_actions(ploneformgen):
         type_ = TYPES_MAPPING.get(properties["_portal_type"])
@@ -115,6 +117,9 @@ def actions_model(ploneformgen):
                 continue
 
             value = to_text(value)
+            review_state = portal_workflow.getInfoFor(ploneformgen, "review_state")
+            if name == "body_pt" and "wrappedFields" in value and review_state == "published":
+                value = default_mail_body()
 
             prop.handler(field, prop.name, value)
 
