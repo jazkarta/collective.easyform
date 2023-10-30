@@ -20,7 +20,7 @@
              epilogue context/formEpilogue;
            "
            tal:condition="epilogue"
-           tal:content="structure python:epilogue.output_relativ_to(context)"
+           tal:content="structure python:epilogue.output_relative_to(context)"
       ></div>
     </metal:top-slot>
   </metal:form>
