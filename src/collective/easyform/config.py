@@ -57,7 +57,7 @@ DEFAULT_SCRIPT = u"""
 ##
 
 # Available parameters:
-#  fields  = HTTP request form fields as key value pairs
+#  fields  = Submitted data as key-value pairs
 #  request = The current HTTP request.
 #            Access fields by request.form["myfieldname"]
 #  easyform = EasyForm object
