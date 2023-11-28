@@ -195,14 +195,14 @@ class EasyFormForm(AutoExtensibleForm, form.Form):
         errors = self.processActions(unsorted_data)
         if errors:
             return self.setErrorsMessage(errors)
+
         data = OrderedDict(
             [x for x in getFieldsInOrder(self.schema) if x[0] in unsorted_data]
         )
         data.update(unsorted_data)
         thanksPageOverride = self.context.thanksPageOverride
         if not thanksPageOverride:
-            # we come back to the form itself.
-            # the thanks page is handled in the __call__ method
+            self.update_for_thanks_page(data)
             return
         thanksPageOverrideAction = self.context.thanksPageOverrideAction
         thanksPage = get_expression(self.context, thanksPageOverride)
@@ -329,21 +329,8 @@ class EasyFormForm(AutoExtensibleForm, form.Form):
         self.formMaybeForceSSL()
         super(EasyFormForm, self).update()
         self.template = self.form_template
-        if self.request.method != "POST" or self.context.thanksPageOverride:
-            # go with all but default thank you page rendering
-            return
-        # If an adapter has already set errors, don't re-run extraction and
-        # validation, just bail out:
-        # (we copy the logic from plone.app.z3cform at templates/macros.pt)
-        if self.widgets.errors or self.status == getattr(
-            self, "formErrorsMessage", None
-        ):
-            return
-        data, errors = self.extractData()
-        if errors:
-            # render errors
-            return
-        data = self.updateServerSideData(data)
+
+    def update_for_thanks_page(self, data):
         self.thanksPage = True
         self.template = self.thank_you_template
         self.fields = self.setThanksFields(self.base_fields, data)
