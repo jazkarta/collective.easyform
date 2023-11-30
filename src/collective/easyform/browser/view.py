@@ -327,8 +327,8 @@ class EasyFormForm(AutoExtensibleForm, form.Form):
     def update(self):
         """Update form - see interfaces.IForm"""
         self.formMaybeForceSSL()
-        super(EasyFormForm, self).update()
         self.template = self.form_template
+        super(EasyFormForm, self).update()
 
     def update_for_thanks_page(self, data):
         self.thanksPage = True
