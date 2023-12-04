@@ -11,6 +11,7 @@ from plone import api
 from Products.PloneFormGen.content.actionAdapter import FormActionAdapter
 
 import logging
+import re
 
 
 logger = logging.getLogger("collective.easyform.migration")
@@ -69,6 +70,11 @@ PROPERTIES_MAPPING = {
     "ScriptBody": Property("ScriptBody", append_node),
 }
 
+LEGACY_MAILER_TEMPLATES = (
+    '<html xmlns="http://www.w3.org/1999/xhtml"> <head><title></title></head> <body> <p tal:content="here/getBody_pre | nothing" /> <dl> <tal:block repeat="field options/wrappedFields"> <dt tal:content="field/fgField/widget/label" /> <dd tal:content="structure python:field.htmlValue(request)" /> </tal:block> </dl> <p tal:content="here/getBody_post | nothing" /> <pre tal:content="here/getBody_footer | nothing" /> </body> </html> ',
+    '<html xmlns="http://www.w3.org/1999/xhtml"> <head><title></title></head> <body> <p tal:content="here/body_pre | nothing" /> <dl> <tal:block repeat="field options/wrappedFields"> <dt tal:content="field/fgField/widget/label" /> <dd tal:content="structure python:field.htmlValue(request)" /> </tal:block> </dl> <p tal:content="here/body_post | nothing" /> <pre tal:content="here/body_footer | nothing" /> </body> </html> ',
+)
+
 
 def pfg_actions(context):
     actions = []
@@ -117,9 +123,13 @@ def actions_model(ploneformgen):
                 continue
 
             value = to_text(value)
-            review_state = portal_workflow.getInfoFor(ploneformgen, "review_state")
-            if name == "body_pt" and "wrappedFields" in value and review_state == "published":
-                value = default_mail_body()
+
+            if name == "body_pt":
+                review_state = portal_workflow.getInfoFor(ploneformgen, "review_state")
+                body_pt = re.sub(r'<title>.*?</title>', '<title></title>', value)
+                is_legacy_default = re.sub(r"\s+", " ", body_pt) in LEGACY_MAILER_TEMPLATES
+                if is_legacy_default or ("wrappedFields" in value and review_state == "published"):
+                    value = default_mail_body()
 
             prop.handler(field, prop.name, value)
 
