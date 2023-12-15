@@ -78,6 +78,12 @@
       mode="hidden"
       widget="collective.easyform.interfaces.ILabelWidget"
       />
+    <z3c:widgetTemplate
+      mode="display"
+      widget="z3c.form.interfaces.ITextLinesWidget"
+      layer="..interfaces.IEasyFormLayer"
+      template="textlines_display.pt"
+      />
   <browser:page
       name="ploneform-render-widget"
       for="collective.easyform.interfaces.ILabelWidget"
