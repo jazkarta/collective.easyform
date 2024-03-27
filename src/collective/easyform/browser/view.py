@@ -184,10 +184,23 @@ class EasyFormForm(AutoExtensibleForm, form.Form):
             self.widgets[field].error = view
         self.status = self.formErrorsMessage
 
+    def fix_select2_widgets(self):
+        # Plone Select widgets store values as strings, but
+        # the display widget expects the extracted list,
+        # so we need to fix the request form data here
+        # before actions are triggered.
+        for name, widget in self.widgets.items():
+            is_select = ISelectWidget.providedBy(widget)
+            if is_select:
+                request_value = self.request.form.get("form.widgets.{}".format(name))
+                if request_value and isinstance(request_value, six.string_types):
+                    self.request.form["form.widgets.{}".format(name)] = (request_value,)
+
     @button.buttonAndHandler(
         PMF(u"Submit"), name="submit", condition=lambda form: not form.thanksPage
     )
     def handleSubmit(self, action):
+        self.fix_select2_widgets()
         unsorted_data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
@@ -402,7 +415,6 @@ class EasyFormForm(AutoExtensibleForm, form.Form):
         if self.context.nameAttribute:
             return self.context.nameAttribute
         return None
-    
 
     def getOnDisplayOverride(self):
         """Evaluate form setup script TALES expression stored in the
