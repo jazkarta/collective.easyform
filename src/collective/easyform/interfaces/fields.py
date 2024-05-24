@@ -49,6 +49,10 @@ def widgetsFactory(context):
         )
     ]
     for adapter in set(adapters):
+        # Skip this widget because it doesn't behave well when used directly in
+        # Plone
+        if adapter.__name__ == "CollectionSelectFieldWidget":
+            continue
         name = u"{0}.{1}".format(adapter.__module__, adapter.__name__)
         terms.append(WidgetVocabulary.createTerm(name, str(name), adapter.__name__))
     return WidgetVocabulary(terms)

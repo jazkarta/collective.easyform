@@ -1,4 +1,7 @@
 from plone import api
+from .. import api as easyform_api
+from ..interfaces import IFieldExtender
+from ..browser.widgets import EasyFormMultiSelectFieldWidget
 
 import logging
 
@@ -68,3 +71,25 @@ def fix_savedata_persistence_issues(context):
             logger.info(
                 'Fixed storage of {}'.format('/'.join(form.getPhysicalPath()))
             )
+
+
+def update_form_select_widgets(context):
+    catalog = api.portal.get_tool('portal_catalog')
+    form_brains = catalog.unrestrictedSearchResults(portal_type="EasyForm")
+    forms_updated = fields_updated = 0
+    for brain in form_brains:
+        form = brain._unrestrictedGetObject()
+        schema = easyform_api.get_schema(form)
+        changed = False
+        for fname in schema:
+            field = schema[fname]
+            efield = IFieldExtender(field)
+            field_widget = getattr(efield, "field_widget", None)
+            if field_widget and field_widget.widget_factory.__name__ == 'CollectionSelectFieldWidget':
+                efield.field_widget = EasyFormMultiSelectFieldWidget
+                changed = True
+                fields_updated += 1
+        if changed:
+            easyform_api.set_fields(form, schema)
+            forms_updated += 1
+    logger.info("Update {} fields on {} forms".format(fields_updated, forms_updated))

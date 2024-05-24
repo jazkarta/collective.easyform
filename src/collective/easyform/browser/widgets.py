@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import six
 from collective.easyform.interfaces import ILabelWidget
 from collective.easyform.interfaces import IRenderWidget
 from collective.easyform.interfaces import IRichLabelWidget
+from plone.app.z3cform.widget import SelectWidget
 from Products.Five.browser import BrowserView
 from Products.Five.browser.metaconfigure import ViewMixinForTemplates
 from z3c.form import interfaces
@@ -16,6 +18,7 @@ from zope.interface import implementer_only
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserView
 from zope.schema.interfaces import IField
+from zope.schema.interfaces import IUnorderedCollection
 
 
 @implementer_only(ILabelWidget)
@@ -105,3 +108,20 @@ class WidgetCssClassView(object):
         if not css_class:
             return ""
         return css_class
+
+
+class EasyFormMultiSelectWidget(SelectWidget):
+    """Override Select Widget to ensure delimited values are extracted from the
+    request when there's no context."""
+
+    def extract(self, default=interfaces.NO_VALUE):
+        value = super(EasyFormMultiSelectWidget, self).extract(default)
+        if self.separator and isinstance(value, six.string_types):
+            value = value.split(self.separator)
+        return value
+
+
+@adapter(IUnorderedCollection, interfaces.IFormLayer)
+@implementer(interfaces.IFieldWidget)
+def EasyFormMultiSelectFieldWidget(field, request):
+    return FieldWidget(field, EasyFormMultiSelectWidget(request))

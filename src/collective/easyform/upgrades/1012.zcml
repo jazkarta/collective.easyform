@@ -1,0 +1,17 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:gs="http://namespaces.zope.org/genericsetup"
+    >
+
+  <gs:upgradeSteps
+      destination="1012"
+      profile="collective.easyform:default"
+      source="1011"
+      >
+    <gs:upgradeStep
+        title="Update select widgets to ones that can re-post data and render in emails"
+        handler=".update_form_select_widgets"
+        />
+  </gs:upgradeSteps>
+
+</configure>

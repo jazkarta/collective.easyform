@@ -124,7 +124,7 @@ def append_widget_node(field, name, value):
     type_ = field.get("type")
     if type_ == "zope.schema.Set":
         if value == "select":
-            widget = "z3c.form.browser.select.CollectionSelectFieldWidget"
+            widget = "collective.easyform.browser.widgets.EasyFormMultiSelectFieldWidget"
         else:
             widget = "z3c.form.browser.checkbox.CheckBoxFieldWidget"
     else:

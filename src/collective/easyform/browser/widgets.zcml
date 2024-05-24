@@ -130,6 +130,13 @@
       factory="z3c.form.browser.radio.RadioFieldWidget"
       />
 
+  <!-- handle multi-select Select2 Widget value extraction -->
+  <adapter
+      for="zope.schema.interfaces.IUnorderedCollection
+           plone.app.z3cform.interfaces.IPloneFormLayer"
+      factory=".widgets.EasyFormMultiSelectFieldWidget"
+      />
+
   <configure zcml:condition="installed plone.formwidget.recaptcha">
     <adapter
         provides="z3c.form.interfaces.IFieldWidget"
