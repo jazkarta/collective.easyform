@@ -116,10 +116,11 @@ class EasyFormMultiSelectWidget(SelectWidget):
 
     def extract(self, default=interfaces.NO_VALUE):
         value = super(EasyFormMultiSelectWidget, self).extract(default)
-        if self.separator and isinstance(value, six.string_types) and value:
-            value = value.split(self.separator)
-        elif not value:
-            value = []
+        if self.separator and isinstance(value, six.string_types):
+            if value:
+                value = value.split(self.separator)
+            else:
+                value = []
         return value
 
 
