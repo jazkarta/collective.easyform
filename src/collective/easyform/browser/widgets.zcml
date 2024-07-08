@@ -131,11 +131,8 @@
       />
 
   <!-- handle multi-select Select2 Widget value extraction -->
-  <adapter
-      for="zope.schema.interfaces.IUnorderedCollection
-           plone.app.z3cform.interfaces.IPloneFormLayer"
-      factory=".widgets.EasyFormMultiSelectFieldWidget"
-      />
+  <adapter factory=".widgets.EasyFormMultiSelectFieldWidget" />
+  <adapter factory=".widgets.EasyFormChoiceWidget" />
 
   <configure zcml:condition="installed plone.formwidget.recaptcha">
     <adapter

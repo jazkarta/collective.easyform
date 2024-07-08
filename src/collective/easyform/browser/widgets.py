@@ -4,6 +4,7 @@ import six
 from collective.easyform.interfaces import ILabelWidget
 from collective.easyform.interfaces import IRenderWidget
 from collective.easyform.interfaces import IRichLabelWidget
+from plone.app.z3cform.interfaces import IPloneFormLayer
 from plone.app.z3cform.widget import SelectWidget
 from Products.Five.browser import BrowserView
 from Products.Five.browser.metaconfigure import ViewMixinForTemplates
@@ -17,8 +18,10 @@ from zope.interface import implementer
 from zope.interface import implementer_only
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserView
+from zope.schema.interfaces import IChoice
 from zope.schema.interfaces import IField
 from zope.schema.interfaces import IUnorderedCollection
+from zope.schema.interfaces import ISource
 
 
 @implementer_only(ILabelWidget)
@@ -124,7 +127,13 @@ class EasyFormMultiSelectWidget(SelectWidget):
         return value
 
 
-@adapter(IUnorderedCollection, interfaces.IFormLayer)
+@adapter(IUnorderedCollection, IPloneFormLayer)
 @implementer(interfaces.IFieldWidget)
 def EasyFormMultiSelectFieldWidget(field, request):
+    return FieldWidget(field, EasyFormMultiSelectWidget(request))
+
+
+@adapter(IChoice, ISource, IPloneFormLayer)
+@implementer(interfaces.IFieldWidget)
+def EasyFormChoiceWidget(field, vocabulary, request):
     return FieldWidget(field, EasyFormMultiSelectWidget(request))
